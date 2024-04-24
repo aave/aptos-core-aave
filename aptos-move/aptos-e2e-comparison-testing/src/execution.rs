@@ -238,7 +238,10 @@ impl Execution {
             }
         }
         if v1_failed || v2_failed {
-            let mut err_msg = "compilation failed at ".to_string();
+            let mut err_msg = format!(
+                "compilation for the package {} failed at",
+                package_info.package_name
+            );
             if v1_failed {
                 err_msg = format!("{} v1", err_msg);
             }
@@ -263,11 +266,9 @@ impl Execution {
             {
                 let compiled_result = self.compile_code(&txn_idx, compiled_cache);
                 if compiled_result.is_err() {
-                    self.output_result_str(format!(
-                        "compilation failed for the package:{} at version:{}",
-                        txn_idx.package_info.package_name, cur_version
-                    ));
-                    return compiled_result;
+                    let err = compiled_result.unwrap_err();
+                    self.output_result_str(format!("{} at version:{}", err, cur_version));
+                    return Err(err);
                 }
             }
             // read the state data;
