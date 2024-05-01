@@ -75,6 +75,8 @@ module aptos_framework::multisig_account {
     const EPAYLOAD_DOES_NOT_MATCH_HASH: u64 = 2008;
     /// Transaction has not received enough approvals to be executed.
     const ENOT_ENOUGH_APPROVALS: u64 = 2009;
+    /// Provided target function does not match the payload stored in the on-chain transaction.
+    const EPAYLOAD_DOES_NOT_MATCH: u64 = 2010;
     /// Transaction has not received enough rejections to be officially rejected.
     const ENOT_ENOUGH_REJECTIONS: u64 = 10;
     /// Number of signatures required must be more than zero and at most the total number of owners.
@@ -395,7 +397,12 @@ module aptos_framework::multisig_account {
         let transaction = table::borrow(&multisig_account_resource.transactions, sequence_number);
 
         if (option::is_some(&transaction.payload)) {
-            *option::borrow(&transaction.payload)
+            let onchain_payload = option::borrow(&transaction.payload);
+            assert!(
+                vector::is_empty(&provided_payload) || &provided_payload == onchain_payload,
+                error::invalid_argument(EPAYLOAD_DOES_NOT_MATCH),
+            );
+            *onchain_payload
         } else {
             provided_payload
         }

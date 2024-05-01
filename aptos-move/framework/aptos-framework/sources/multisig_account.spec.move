@@ -203,6 +203,9 @@ spec aptos_framework::multisig_account {
         aborts_if !exists<MultisigAccount>(multisig_account);
         aborts_if multisig_account_resource.last_executed_sequence_number + 1 > MAX_U64;
         aborts_if !table::spec_contains(multisig_account_resource.transactions, sequence_number);
+        aborts_if option::spec_is_some(transaction.payload) &&
+            len(provided_payload) > 0 &&
+            option::spec_borrow(transaction.payload) != provided_payload;
         ensures option::spec_is_none(transaction.payload) ==> result == provided_payload;
     }
 
