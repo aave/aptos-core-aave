@@ -4,3 +4,4 @@
 pub mod backup_restore;
 pub mod runtime;
 pub mod table_info_service;
+pub mod tailer_service;

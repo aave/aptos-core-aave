@@ -1160,6 +1160,7 @@ dependencies = [
  "aptos-types",
  "aptos-vm",
  "bcs 0.1.4",
+ "byteorder",
  "bytes",
  "dashmap",
  "move-core-types",

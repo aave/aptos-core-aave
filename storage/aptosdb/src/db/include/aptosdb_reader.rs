@@ -807,6 +807,40 @@ impl DbReader for AptosDB {
             self.state_store.get_usage(version)
         })
     }
+
+    fn get_db_backup_iter(
+        &self,
+        start_version: Version,
+        num_transactions: usize,
+    ) -> Result<Box<dyn Iterator<Item = Result<(Transaction, Vec<ContractEvent>)>> + '_,>> {
+        gauged_api("get_db_backup_iter", || {
+            self.error_if_ledger_pruned("Transaction", start_version)?;
+
+            let txn_iter = self
+                .ledger_db
+                .transaction_db()
+                .get_transaction_iter(start_version, num_transactions)?;
+            let mut event_vec_iter = self
+            .ledger_db
+            .event_db()
+            .get_events_by_version_iter(start_version, num_transactions)?;
+        let zipped = txn_iter.enumerate().map(move |(idx, txn_res)| {
+            let version = start_version + idx as u64; // overflow is impossible since it's check upon txn_iter construction.
+
+            let txn = txn_res?;
+            let event_vec = event_vec_iter.next().ok_or_else(|| {
+                AptosDbError::NotFound(format!(
+                    "Events not found when Transaction exists., version {}",
+                    version
+                ))
+            })??;
+            Ok((txn, event_vec))
+        });
+        Ok(Box::new(zipped) as Box<dyn Iterator<Item = Result<(Transaction, Vec<ContractEvent>)>> + '_,> )
+
+        })
+
+    }
 }
 
 impl AptosDB {

@@ -54,7 +54,7 @@ impl TableInfoService {
     /// 6. retry all the txns in the loop sequentially to clean up the pending on items
     pub async fn run(&mut self) {
         loop {
-            let start_time = std::time::Instant::now();
+            let start_time: std::time::Instant = std::time::Instant::now();
             let ledger_version = self.get_highest_known_version().await.unwrap_or_default();
             let batches = self.get_batches(ledger_version).await;
             let results = self

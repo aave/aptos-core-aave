@@ -4,10 +4,12 @@
 /// TODO(jill): deprecate Indexer once Indexer Async V2 is ready
 mod db;
 pub mod db_ops;
+pub mod db_tailer;
 pub mod db_v2;
 mod metadata;
 mod schema;
 pub mod table_info_reader;
+mod utils;
 
 use crate::{
     db::INDEX_DB_NAME,

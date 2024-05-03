@@ -15,6 +15,8 @@ use aptos_db_indexer::table_info_reader::TableInfoReader;
 use aptos_event_notifications::{DbBackedOnChainConfig, ReconfigNotificationListener};
 use aptos_indexer_grpc_fullnode::runtime::bootstrap as bootstrap_indexer_grpc;
 use aptos_indexer_grpc_table_info::runtime::bootstrap as bootstrap_indexer_table_info;
+use aptos_indexer_grpc_table_info::runtime::bootstrap_db_tailer;
+
 use aptos_logger::{debug, telemetry_log_writer::TelemetryLog, LoggerFilterUpdater};
 use aptos_mempool::{network::MempoolSyncMsg, MempoolClientRequest, QuorumStoreRequest};
 use aptos_mempool_notifications::MempoolNotificationListener;

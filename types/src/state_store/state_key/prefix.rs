@@ -42,6 +42,12 @@ impl From<AccountAddress> for StateKeyPrefix {
     }
 }
 
+impl From<Vec<u8>> for StateKeyPrefix {
+    fn from(bytes: Vec<u8>) -> Self {
+        Self::new(StateKeyTag::AccessPath, bytes)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::{

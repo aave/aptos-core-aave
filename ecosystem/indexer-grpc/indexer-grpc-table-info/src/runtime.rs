@@ -1,7 +1,7 @@
 // Copyright © Aptos Foundation
 // SPDX-License-Identifier: Apache-2.0
 
-use crate::table_info_service::TableInfoService;
+use crate::{table_info_service::TableInfoService, tailer_service::TailerService};
 use aptos_api::context::Context;
 use aptos_config::config::NodeConfig;
 use aptos_db_indexer::{db_ops::open_db, db_v2::IndexerAsyncV2};
@@ -12,6 +12,22 @@ use std::sync::Arc;
 use tokio::runtime::Runtime;
 
 const INDEX_ASYNC_V2_DB_NAME: &str = "index_indexer_async_v2_db";
+
+pub fn bootstrap_db_tailer(config: &NodeConfig, db_rw: DbReaderWriter) -> Option<Runtime> {
+    if !config.indexer_table_info.enabled {
+        return None;
+    }
+    let runtime = aptos_runtimes::spawn_named_runtime("index-db-tailer".to_string(), None);
+    // Set up db config and open up the db initially to read metadata
+    let node_config = config.clone();
+    // Spawn the runtime for db tailer
+    runtime.spawn(async move {
+        let mut tailer_service = TailerService::new(db_rw.reader, &node_config);
+        tailer_service.run().await;
+    });
+
+    Some(runtime)
+}
 
 /// Creates a runtime which creates a thread pool which sets up fullnode indexer table info service
 /// Returns corresponding Tokio runtime

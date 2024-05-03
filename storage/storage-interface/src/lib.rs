@@ -453,6 +453,12 @@ pub trait DbReader: Send + Sync {
 
         /// Returns state storage usage at the end of an epoch.
         fn get_state_storage_usage(&self, version: Option<Version>) -> Result<StateStorageUsage>;
+
+        fn get_db_backup_iter(
+            &self,
+            start_version: Version,
+            num_transactions: usize,
+        ) -> Result<Box<dyn Iterator<Item = Result<(Transaction, Vec<ContractEvent>)>> + '_>>;
     ); // end delegated
 
     /// Returns the latest ledger info.

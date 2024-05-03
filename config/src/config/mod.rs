@@ -15,6 +15,7 @@ mod error;
 mod execution_config;
 mod gas_estimation_config;
 mod identity_config;
+pub mod index_db_tailer_config;
 mod indexer_config;
 mod indexer_grpc_config;
 mod indexer_table_info_config;

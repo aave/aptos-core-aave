@@ -58,6 +58,8 @@ pub enum IndexerGrpcStep {
     TableInfoProcessedBatch,
     // [Indexer Table Info] Processed transactions from fullnode
     TableInfoProcessed,
+    // [Indexer DB Tailer] Tailed AptosDB and write to indexer DB
+    DBTailerProcessed,
 }
 
 impl IndexerGrpcStep {
@@ -91,6 +93,8 @@ impl IndexerGrpcStep {
             // Table info service steps
             IndexerGrpcStep::TableInfoProcessedBatch => "1",
             IndexerGrpcStep::TableInfoProcessed => "2",
+            // DB tailer service steps
+            IndexerGrpcStep::DBTailerProcessed => "1",
         }
     }
 
@@ -135,6 +139,10 @@ impl IndexerGrpcStep {
             }
             IndexerGrpcStep::TableInfoProcessed => {
                 "[Indexer Table Info] Processed successfully"
+            }
+            // DB tailer service steps
+            IndexerGrpcStep::DBTailerProcessed => {
+                "[Indexer DB Tailer] Tailed AptosDB and write to indexer DB"
             }
         }
     }
