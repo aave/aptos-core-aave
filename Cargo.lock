@@ -1491,7 +1491,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "aptos-experimental-airdrop"
+name = "aptos-experimental-bulk-txn-submit"
 version = "0.0.0"
 dependencies = [
  "anyhow",
