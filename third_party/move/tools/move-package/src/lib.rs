@@ -28,7 +28,7 @@ use move_model::{
     model,
 };
 use serde::{Deserialize, Serialize};
-use source_package::layout::SourcePackageLayout;
+use source_package::{layout::SourcePackageLayout, std_lib::StdVersion};
 use std::{
     collections::{BTreeMap, BTreeSet},
     fmt,
@@ -109,6 +109,10 @@ pub struct BuildConfig {
     #[clap(name = "test-mode", long = "test", global = true)]
     pub test_mode: bool,
 
+    /// Whether to override the standard library with the given version.
+    #[clap(long = "override-std", global = true, value_parser)]
+    pub override_std: Option<StdVersion>,
+
     /// Generate documentation for packages
     #[clap(name = "generate-docs", long = "doc", global = true)]
     pub generate_docs: bool,
@@ -175,6 +179,10 @@ pub struct CompilerConfig {
     #[clap(long = "language-version", global = true,
            value_parser = clap::value_parser!(LanguageVersion))]
     pub language_version: Option<LanguageVersion>,
+
+    /// Experiments for v2 compiler to set to true
+    #[clap(long = "experiments", global = true)]
+    pub experiments: Vec<String>,
 }
 
 #[derive(Debug, Clone, Eq, PartialEq, PartialOrd)]

@@ -106,6 +106,7 @@ impl ReleaseTarget {
                 with_source_maps: false,
                 with_error_map: true,
                 named_addresses: Default::default(),
+                override_std: None,
                 install_dir: None,
                 with_docs: true,
                 docgen_options: Some(DocgenOptions {
@@ -116,6 +117,7 @@ impl ReleaseTarget {
                     collapsed_sections: true,
                     landing_page_template: Some("doc_template/overview.md".to_string()),
                     references_file: Some("doc_template/references.md".to_string()),
+                    output_format: None,
                 }),
                 skip_fetch_latest_git_deps: true,
                 bytecode_version: None,
@@ -124,6 +126,7 @@ impl ReleaseTarget {
                 skip_attribute_checks: false,
                 check_test_code: false,
                 known_attributes: extended_checks::get_all_attribute_names().clone(),
+                experiments: vec![],
             },
             packages: packages.iter().map(|(path, _)| path.to_owned()).collect(),
             rust_bindings: packages

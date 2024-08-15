@@ -8,7 +8,7 @@ use crate::{
     network::NetworkTask,
     network_interface::{ConsensusNetworkClient, DIRECT_SEND, RPC},
     network_tests::{NetworkPlayground, TwinId},
-    payload_manager::PayloadManager,
+    payload_manager::DirectMempoolPayloadManager,
     pipeline::buffer_manager::OrderedBlocks,
     quorum_store::quorum_store_db::MockQuorumStoreDB,
     rand::rand_gen::storage::in_memory::InMemRandDb,
@@ -98,7 +98,7 @@ impl SMRNode {
             playground.peer_protocols(),
         );
         let consensus_network_client = ConsensusNetworkClient::new(network_client);
-        let network_events = NetworkEvents::new(consensus_rx, None);
+        let network_events = NetworkEvents::new(consensus_rx, None, true);
         let network_service_events =
             NetworkServiceEvents::new(hashmap! {NetworkId::Validator => network_events});
 
@@ -118,7 +118,7 @@ impl SMRNode {
         let reconfig_listener = ReconfigNotificationListener {
             notification_receiver: reconfig_events,
         };
-        let _commit_notifier = Arc::from(PayloadManager::DirectMempool);
+        let _commit_notifier = Arc::from(DirectMempoolPayloadManager::new());
         let mut configs = HashMap::new();
         configs.insert(
             ValidatorSet::CONFIG_ID,

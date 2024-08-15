@@ -18,11 +18,17 @@ pub mod op_counters;
 
 pub trait TimerHelper {
     fn timer_with(&self, labels: &[&str]) -> HistogramTimer;
+
+    fn observe_with(&self, labels: &[&str], val: f64);
 }
 
 impl TimerHelper for HistogramVec {
     fn timer_with(&self, vals: &[&str]) -> HistogramTimer {
         self.with_label_values(vals).start_timer()
+    }
+
+    fn observe_with(&self, labels: &[&str], val: f64) {
+        self.with_label_values(labels).observe(val)
     }
 }
 
@@ -37,11 +43,21 @@ impl IntGaugeHelper for IntGaugeVec {
 }
 
 pub trait IntCounterHelper {
+    type IntType;
+
     fn inc_with(&self, labels: &[&str]);
+
+    fn inc_with_by(&self, labels: &[&str], by: Self::IntType);
 }
 
 impl IntCounterHelper for IntCounterVec {
+    type IntType = u64;
+
     fn inc_with(&self, labels: &[&str]) {
         self.with_label_values(labels).inc()
+    }
+
+    fn inc_with_by(&self, labels: &[&str], v: Self::IntType) {
+        self.with_label_values(labels).inc_by(v)
     }
 }
