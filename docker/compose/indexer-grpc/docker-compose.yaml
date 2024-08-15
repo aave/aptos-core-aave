@@ -38,7 +38,7 @@ services:
       - redis
 
   indexer-grpc-cache-worker:
-    image: "${INDEXER_GRPC_IMAGE_REPO:-aptoslabs/indexer-grpc}:${IMAGE_TAG:-aptos-indexer-grpc-v1.5.1}"
+    image: "${INDEXER_GRPC_IMAGE_REPO:-aptoslabs/indexer-grpc}:${IMAGE_TAG:-aptos-indexer-grpc-v1.7.1}"
     networks:
       shared:
         ipv4_address: 172.16.1.13
@@ -58,7 +58,7 @@ services:
       - redis
 
   indexer-grpc-file-store:
-    image: "${INDEXER_GRPC_IMAGE_REPO:-aptoslabs/indexer-grpc}:${IMAGE_TAG:-aptos-indexer-grpc-v1.5.1}"
+    image: "${INDEXER_GRPC_IMAGE_REPO:-aptoslabs/indexer-grpc}:${IMAGE_TAG:-aptos-indexer-grpc-v1.7.1}"
     networks:
       shared:
         ipv4_address: 172.16.1.14
@@ -78,7 +78,7 @@ services:
       - redis
 
   indexer-grpc-data-service:
-    image: "${INDEXER_GRPC_IMAGE_REPO:-aptoslabs/indexer-grpc}:${IMAGE_TAG:-aptos-indexer-grpc-v1.5.1}"
+    image: "${INDEXER_GRPC_IMAGE_REPO:-aptoslabs/indexer-grpc}:${IMAGE_TAG:-aptos-indexer-grpc-v1.7.1}"
     networks:
       shared:
         ipv4_address: 172.16.1.15
